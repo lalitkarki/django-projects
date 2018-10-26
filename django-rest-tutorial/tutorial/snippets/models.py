@@ -14,7 +14,7 @@ STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
 
 
 class Snippet(models.Model):
-    owner = models.name = models.ForeignKey('auth.user', related_name='snippets', on_delete=models.CASCADE)
+    owner = models.ForeignKey('auth.user', related_name='snippets', on_delete=models.CASCADE)
     highlighted = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, blank=True, default='')
@@ -25,9 +25,9 @@ class Snippet(models.Model):
 
     def save(self, *args, **kwargs):
         lexer = get_lexer_by_name(self.language)
-        lineos = 'table' if self.lineos else False
+        linenos = 'table' if self.linenos else False
         options = {'title': self.title} if self.title else {}
-        formatter = HtmlFormatter(style=self.style, lineos=lineos, full=True, **options)
+        formatter = HtmlFormatter(style=self.style, linenos=linenos, full=True, **options)
         self.highlighted = highlight(self.code, lexer, formatter)
         super(Snippet, self).save(*args, **kwargs)
 
